@@ -1,0 +1,55 @@
+:PROPERTIES:
+:ID: timecalcinfo
+:FILETAGS: programming freecodecamp
+:END:
+
+#+TITLE: Time Calculator Instructions and Notes
+
+* Time Calculator
+
+** Instructions
+Write a function named add_time that takes in two required parameters and one optional parameter:
+
+    a start time in the 12-hour clock format (ending in AM or PM)
+    a duration time that indicates the number of hours and minutes
+    (optional) a starting day of the week, case insensitive
+
+The function should add the duration time to the start time and return the result.
+
+If the result will be the next day, it should show (next day) after the time. If the result will be more than one day later, it should show (n days later) after the time, where "n" is the number of days later.
+
+If the function is given the optional starting day of the week parameter, then the output should display the day of the week of the result. The day of the week in the output should appear after the time and before the number of days later.
+
+#+BEGIN_SRC
+add_time("3:00 PM", "3:10")
+# Returns: 6:10 PM
+
+add_time("11:30 AM", "2:32", "Monday")
+# Returns: 2:02 PM, Monday
+
+add_time("11:43 AM", "00:20")
+# Returns: 12:03 PM
+
+add_time("10:10 PM", "3:30")
+# Returns: 1:40 AM (next day)
+
+add_time("11:43 PM", "24:20", "tueSday")
+# Returns: 12:03 AM, Thursday (2 days later)
+
+add_time("6:30 PM", "205:12")
+# Returns: 7:42 AM (9 days later)
+#+END_SRC
+Do not import any Python libraries. Assume that the start times are valid times. The minutes in the duration time will be a whole number less than 60, but the hour can be any whole number.
+
+** Method
+*** Steps
+1. Enter parameters (start time, duration time,  optional day of the week case insensitive)
+2. Add duration to start time
+   1. Take first time and store it.
+   2. Add second time to first time.
+   3. Parse total time with math operations
+      1. If PM, add 12 to original number, if total > 24, calculate how many days later by finding multiples of 24.
+      2. Store start day in case optional argument is given. If given, calculate how many times the total exceeds 24 and add that many days.
+      3. If it would go past Sunday, loop back to Monday.
+3. Return results
+   1. If optional argument is given, display day of the week of result. 
