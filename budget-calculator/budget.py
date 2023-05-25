@@ -1,11 +1,11 @@
 # * The Code
-"""Budget calculator app for freecodecamp assignment."""
+"""Budget calculator app for freecodec(x.spent for x inbamp assignm)ent."""
+import itertools
 
 # ** The class
 
 
 class Category:
-
     """The budget app class containing its functions."""
 
     def __init__(self, name):
@@ -16,6 +16,7 @@ class Category:
         self.descriptions = []
         self.amounts = []
         self.balance = 0
+        self.spent = 0
 
     def __str__(self):
         """Show formatted budget when printed."""
@@ -54,6 +55,7 @@ class Category:
             print("")
 
         else:
+            self.spent += witamount
             witamount = -abs(witamount)
             self.balance += witamount
             self.print.append(witdescription)
@@ -76,6 +78,7 @@ class Category:
                 {"amount: " + str(tranamount) + ", transfer from: " + self.name}
             )
             destination.balance += tranamount
+            self.spent += tranamount
             destination.print.append("Transfer from" + self.name)
             destination.print.append(str(tranamount))
             tranamount = -abs(tranamount)
@@ -92,14 +95,66 @@ class Category:
 
 
 # ** The bar function
-def create_spend_chart(cat1, cat2=None, cat3=None, cat4=None): 
+def create_spend_chart(cat1, cat2=None, cat3=None, cat4=None):
     """Create a bar graph accepting up to four categories."""
-    graph = (
-        ("Percentage spent by category\n")
-        + "test"
+    categories = list(filter(None, (cat1, cat2, cat3, cat4)))
+    total = sum(x.spent for x in categories)
+    percentages = {x.name: int(round((100 * x.spent/total), -1)) for x in categories}
+    bars = {"hunds": "100| ", "nineties": " 90| ", "eighties": " 80| ", "seventies": " 70| ", "sixties": " 60| ", "fifties": " 50| ", "fourties": " 40| ", "thirties": " 30| ", "twenties": " 20| ", "tens": " 10| ", "zeroes": "  0| "}
+    for i in percentages.values():
+        if i == 100:
+            bars["hunds"] = bars["hunds"] + "o "
+        if i > 89:
+            bars["nineties"] =  bars["nineties"] + "o "
+        if i>79:
+            bars["eighties"] = bars["eighties"] + "o "
+        if i>69:
+            bars["seventies"] = bars["seventies"] + "o "
+        if i>59:
+            bars["sixties"] = bars["sixties"] + "o "
+        if i>49:
+            bars["fifties"] = bars["fifties"] + "o "
+        if i>39:
+            bars["fourties"] = bars["fourties"] + "o "
+        if i>29:
+            bars["thirties"] = bars["thirties"] + "o "
+        if i>19:
+            bars["twenties"] = bars["twenties"] + "o "
+        if i>9:
+            bars["tens"] = bars["tens"] + "o "
+        if i>0:
+            bars["zeroes"] = bars["zeroes"] + "o "
 
+    divider = "    " + ("-" * (len(bars["zeroes"]) - 3))
+    counter = 0
+    namessplit = list((list(x) for x in percentages.keys()))
 
-    )
+    match len(categories):
+        case 1:
+            names = namessplit
+        case 2:
+            names = (list(itertools.zip_longest(namessplit[0], namessplit[1])))
+        case 3:
+            names = (list(itertools.zip_longest(namessplit[0], namessplit[1], namessplit[2])))
+        case 4:
+            names = (list(itertools.zip_longest(namessplit[0], namessplit[1], namessplit[2], namessplit[3])))
+        case _:
+            print("Graph function only supports up to 4 categories!")
+            exit()
+
+    namesclean = []
+    for i in names: namesclean += [" " if x is None else x for x in i]
+
+    i = len(categories)
+    while i < len(namesclean):
+        namesclean.insert(i, "\n    ")
+        i += (len(categories)+1)
+    namesclean = ' '.join(namesclean)
+
+    graph = "Percentage spent by categories\n"
+    for x in bars:
+        graph += (bars[x]) + "\n"
+    graph += divider + "\n     " + namesclean
 
     return print(graph)
 
@@ -112,14 +167,14 @@ food.withdraw(10.15, "groceries")
 food.withdraw(15.89, "restaurant and more food for dessert")
 # print(food.get_balance())
 clothing = Category("Clothing")
-food.transfer(50, clothing) 
+food.transfer(50, clothing)
 clothing.withdraw(25.55)
-clothing.withdraw(100)
+clothing.withdraw(20)
 auto = Category("Auto")
 auto.deposit(1000, "initial deposit")
 auto.withdraw(15)
 
 # print(food)
 # print(clothing)
-create_spend_chart(food)
+create_spend_chart(food, clothing, auto)
 #  LocalWords:  Init
