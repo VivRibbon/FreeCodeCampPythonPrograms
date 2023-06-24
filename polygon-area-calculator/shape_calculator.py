@@ -1,3 +1,5 @@
+# TODO: Add "Too big for picture" error check, ensure "amount inside" function
+# works properly
 class Rectangle:
     """The rectangle class"""
 
